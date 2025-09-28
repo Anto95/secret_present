@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>HBD 30!</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial;background:#0b0f19;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
+#app{position:relative;width:100vw;height:100vh;overflow:hidden}
+h1,button{letter-spacing:.5px}
+#ui{position:absolute;top:16px;left:16px;right:16px;display:flex;gap:8px;align-items:center;justify-content:space-between}
+.badge{padding:8px 12px;background:#111827;border:1px solid #1f2937;border-radius:999px}
+#start{padding:10px 16px;border:none;border-radius:12px;background:#22c55e;color:#041007;font-weight:700;cursor:pointer}
+#dot{position:absolute;width:56px;height:56px;border-radius:50%;display:none;align-items:center;justify-content:center;font-weight:900;user-select:none;touch-action:none;background:#f59e0b}
+#msg{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);padding:24px}
+#msg h1{margin:0;font-size:clamp(28px,6vw,48px)}
+#pic{max-width:82vw;max-height:60vh;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.5);opacity:0;transform:scale(.96);transition:opacity .6s ease,transform .6s ease}
+.conf{position:absolute;top:-10vh;font-size:20px;animation:fall 2.4s linear forwards}
+@keyframes fall{to{transform:translateY(120vh) rotate(360deg);opacity:.9}}
+footer{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:12px;color:#9ca3af}
+</style></head><body><div id=app>
+<div id=ui><div class=badge>⏱️ <span id=t>30</span>s</div><div class=badge>⭐ <span id=s>0</span></div><button id=start>Start</button></div>
+<div id=dot>★</div>
+<div id=msg><h1>Buon 30° 🎉</h1><p id=note></p><img id=pic src="noi.jpg" alt="Noi due"></div>
+<footer>Tocca le stelle più piccole per più punti 😉</footer>
+</div><script>
+(()=>{const $=q=>document.querySelector(q),app=$("#app"),dot=$("#dot"),t=$("#t"),s=$("#s"),btn=$("#start"),msg=$("#msg"),pic=$("#pic"),note=$("#note");
+let W=innerWidth,H=innerHeight,score=0,time=30,timer=null,playing=false,goal=20;
+const rnd=(a,b)=>Math.random()*(b-a)+a,confetti=()=>{for(let i=0;i<24;i++){const c=document.createElement("div");c.className="conf";c.textContent=["🎉","✨","🎊","💥","⭐"][Math.floor(rnd(0,5))];c.style.left=rnd(0,100)+"vw";c.style.animationDuration=rnd(1.8,3)+"s";c.style.fontSize=rnd(14,26)+"px";app.appendChild(c);setTimeout(()=>c.remove(),3000)}};
+const place=()=>{const size=rnd(28,72);dot.style.width=dot.style.height=size+"px";dot.style.left=Math.max(8,Math.min(W-size-8,rnd(0,W)))+"px";dot.style.top=Math.max(60,Math.min(H-size-8,rnd(0,H)))+"px";dot.style.display="flex";dot.style.background=size<40?"#22c55e":"#ef4444";dot.textContent=size<40?"★":"●";dot.dataset.val=size<34?3:size<46?2:1;};
+const tick=()=>{time--;t.textContent=time;if(time<=0)return end();if(playing)setTimeout(place, rnd(0,800))};
+const loop=()=>{timer=setInterval(tick,1000)};
+const tap=e=>{if(!playing)return;const v=+dot.dataset.val||1;score+=dot.style.background.includes("22c55e")?v:-v;s.textContent=score;place();if(score>=goal)end(true);};
+const start=()=>{if(playing)return;playing=true;score=0;time=30;s.textContent=0;t.textContent=time;msg.style.display="none";pic.style.opacity=0;pic.style.transform="scale(.96)";place();loop();btn.disabled=true;};
+const end=(early=false)=>{playing=false;clearInterval(timer);dot.style.display="none";msg.style.display="flex";note.textContent=early?"Hai sbloccato il regalo in anticipo!":"Tempo finito, ma il regalo è tuo!";setTimeout(()=>{pic.style.opacity=1;pic.style.transform="scale(1)";confetti();},350);btn.disabled=false;};
+addEventListener("resize",()=>{W=innerWidth;H=innerHeight});dot.addEventListener("click",tap);dot.addEventListener("touchstart",e=>{e.preventDefault();tap(e)});btn.addEventListener("click",start);
+})();
+</script></body></html>

@@ -26,7 +26,7 @@ h1{margin:0;font-size:clamp(24px,6vw,42px)}
 </div>
 </div><script>
 const wrap=document.getElementById("wrap"),g=document.getElementById("game"),ctx=g.getContext("2d"),fxc=document.getElementById("fx"),fx=fxc.getContext("2d"),overlay=document.getElementById("overlay"),startBtn=document.getElementById("start"),win=document.getElementById("win"),scoreEl=document.getElementById("score"),goalEl=document.getElementById("goal"),lvlEl=document.getElementById("lvl"),toast=document.getElementById("toast"),vid=document.getElementById("video")
-let cell=18,w=360,h=360,snake=[],dir={x:1,y:0},food={x:0,y:0},spec=null,score=0,lv=0,levels=[3,5,7,11,13],base=[140,120,100,85,70],last=0,alive=false,fin=false,slow=0,fast=0,double=0,shield=0,moveDelay=140,ts=null,swipe=false;const picsN=16,pics=[...Array(picsN)].map((_,i)=>`photos/p${i+1}.jpg`),cache={}
+let cell=18,w=360,h=360,snake=[],dir={x:1,y:0},food={x:0,y:0},spec=null,score=0,lv=0,levels=[1,1,1,1,1],base=[140,120,100,85,70],last=0,alive=false,fin=false,slow=0,fast=0,double=0,shield=0,moveDelay=140,ts=null,swipe=false;const picsN=16,pics=[...Array(picsN)].map((_,i)=>`photos/p${i+1}.jpg`),cache={}
 function fit(){const m=Math.min(innerWidth,innerHeight)*0.9;const cells=20;cell=Math.max(12,Math.floor(m/cells));w=cell*cells;h=w;g.width=w;g.height=h;fxc.width=innerWidth;fxc.height=innerHeight}
 function rndCell(){return Math.floor(Math.random()*(w/cell))*cell}
 function newFood(){let p;do{p={x:rndCell(),y:rndCell()}}while(snake.some(s=>s.x==p.x&&s.y==p.y));return p}
@@ -63,4 +63,5 @@ function loadImg(src){if(cache[src])return cache[src];const im=new Image();im.sr
 function burstPhoto(x,y){const isMobile=/Mobi|Android/i.test(navigator.userAgent);const src=pics[Math.floor(Math.random()*pics.length)];drops.push({img:loadImg(src),x,y,vx:(Math.random()-.5)*2.2,vy:-(isMobile?7.2:8.2)-Math.random()*2,scale:.01,s0:isMobile?.18:.15,s1:isMobile?.95:.85,t0:performance.now(),b:0})}
 function enablePhotoBursts(){fxc.style.pointerEvents="auto";document.addEventListener("pointerdown",e=>{if(!fin)return;burstPhoto(e.clientX,e.clientY)},{passive:true})}
 </script></body></html>
+
 
